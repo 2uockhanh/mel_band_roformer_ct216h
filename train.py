@@ -217,6 +217,7 @@ def parse_args_train(dict_args: Union[argparse.Namespace, Dict, None]) -> argpar
     parser.add_argument('--num_workers', type = int, default = 0, help = "Dataloader num_workers")
     parser.add_argument('--seed', type = int, default = 0, help = "Random seed")
     parser.add_argument('--device_ids', nargs = '+', type = int, default = [0], help = 'List of gpu ids')
+    parser.add_argument('--validation_per_epochs', type = int, default = 1, help = 'Number of epochs for validation in period')
     parser.add_argument('--pin_memory', action = 'store_true', help = 'Dataloader pin memory')
     parser.add_argument('--persistent_workers', action = 'store_true', default = False, help = "dataloader persistent_workers")
     parser.add_argument('--prefetch_factor', type = int, default = None, help = 'Dataloader prefetch factor')
@@ -448,7 +449,9 @@ def train_model(args: Union[argparse.Namespace, None], rank = None, world_size =
         print(f'Training loss plot was saved at {image_path}')
         
         accelerator.wait_for_everyone()
-        if (epoch + 1) % 20 == 0: # % 100
+
+        NUMBER_OF_EPOCHS_IN_PERIOD = args.validation_per_epochs
+        if (epoch + 1) % NUMBER_OF_EPOCHS_IN_PERIOD == 0: # % 100
             if ddp:
                 metrics_avg, all_metrics = valid_multi_gpu(model, args, config, args.device_ids, verbose = False)
                 if rank == 0:
