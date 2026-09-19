@@ -58,12 +58,12 @@ training:
   use_amp: true
 
 lora:
-  r: 8
-  lora_alpha: 16 # alpha / rank > 1
-  lora_dropout: 0.05
+  r: 8 # Range: 4-32
+  lora_alpha: 16 # alpha / rank > 1 Values: 16, 24, 32, 64
+  lora_dropout: 0.05 # range: 0 - 0.1
   merge_weights: False
   fan_in_fan_out: False
-  enable_lora: [True]
+  enable_lora: [True, False, True]
 
 augmentations:
   enable: true

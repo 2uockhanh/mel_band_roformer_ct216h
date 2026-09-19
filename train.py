@@ -15,7 +15,8 @@ import matplotlib.pyplot as plt
 from PIL import Image
 from typing import Union, List, Callable, Dict, Any, Optional
 from utils import get_model_from_config, get_optimizer, normalize_batch, get_scheduler, manual_seed, wandb_init, \
-    load_not_compatible_weights, demix_track, load_start_checkpoint, initialize_environment_ddp, initialize_environment
+    load_not_compatible_weights, demix_track, load_start_checkpoint, initialize_environment_ddp, initialize_environment, \
+    get_lora
 from dataset import MSSDataset, MSSValidationDataset
 from torch.utils.data import DataLoader
 from valid import valid_multi_gpu, prefer_target_instrument, valid
@@ -320,6 +321,8 @@ def train_model(args: Union[argparse.Namespace, None], rank = None, world_size =
     if args.model_path:
         checkpoint = torch.load(args.model_path, weights_only=False, map_location='cpu')
         load_start_checkpoint(args, model, checkpoint, type_='train')
+
+    model = get_lora(args, config, model)
     # Exponential Moving Average (EMA) là một loại trung bình động, giúp lọc nhiễu và tạo đường cong mượt mà
     ema_model = None
     # Nếu thông số của biến ema_momentum có trong config.yaml, cho phép mô hình giữ trung bình các tham số trong quá trình huấn luyện

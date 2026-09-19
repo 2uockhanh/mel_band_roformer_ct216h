@@ -234,7 +234,7 @@ def get_lora(args, config, model):
         if args.lora_checkpoint_peft:
             from peft import PeftModel
             model = PeftModel.from_pretrained(model, args.lora_checkpoint_peft)
-            for name, param in model.name_parameters():
+            for name, param in model.named_parameters():
                 if 'lora' in name.lower():
                     param.requires_grad = True
         else:
@@ -266,12 +266,12 @@ def load_start_checkpoint(args: argparse.Namespace, model: nn.Module, old_model,
         if 'model_state_dict' in old_model:
             old_model = old_model['model_state_dict']
         model.load_state_dict(old_model)
-    '''
+
     if args.lora_checkpoint_loralib:
         if should_print:
             print(f'Loading LoRa weights from: {args.lora_checkpoint_loralib}')
         load_lora_weights(model, args.lora_checkpoint_loralib)
-    '''
+
 # Thêm các thông số LoRA vào mô hình (Hàm này hiện tại không dùng)
 def bind_lora_to_model(config: Dict[str, Any], model: nn.Module) -> nn.Module:
     if 'lora' not in config:
