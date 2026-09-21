@@ -37,7 +37,6 @@ python valid.py \
       --config_path config.yaml \
       --model_path /path/to/model_checkpoint \
       --output_dir /path/to/output_folder \
-      --data_path /path/to/dataset \
       --valid_path /path/to/valid_dataset \
       --num_workers 4 \
       --device_ids 0 \
