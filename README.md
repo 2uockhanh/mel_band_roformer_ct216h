@@ -10,8 +10,47 @@ Semester 3 - Academic Year: 2025-2026
 **Major**: Information Technology (High Quality Program)
 
 **Course**: 49
-
+## Overview
+## Dataset
 ## How to use
+**Training**
+```bash
+python train.py \
+      --config_path config.yaml \
+      --model_path /path/to/model_checkpoint \
+      --result_path /path/to/result_folder \
+      --data_path /path/to/dataset \
+      --valid_path /path/to/valid_dataset \
+      --num_workers 4 \
+      --device_ids 0 \
+      --metrics list_of_metrics \
+      --load_epoch \
+      --load_scheduler \
+      --load_optimizer \
+      --load_best_metric \
+      --load_all_losses \
+      --load_all_metrics
+```
+**Valid**
+```bash
+python valid.py \
+      --config_path config.yaml \
+      --model_path /path/to/model_checkpoint \
+      --output_dir /path/to/output_folder \
+      --data_path /path/to/dataset \
+      --valid_path /path/to/valid_dataset \
+      --num_workers 4 \
+      --device_ids 0 \
+      --metrics list_of_metrics
+```
+**Inference**
+```bash
+python inference.py \
+      --config_path config.yaml \
+      --model_path /path/to/model_checkpoint \
+      --input_folder /path/to/input_folder \
+      --output_dir /path/tp/output_folder
+```
 ## Thanks to
 [ZFTurbo](https://github.com/ZFTurbo) for releasing [training code and validating code](https://github.com/ZFTurbo/Music-Source-Separation-Training) which was used to train and validate the model
 
